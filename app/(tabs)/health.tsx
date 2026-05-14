@@ -22,7 +22,7 @@ interface HealthCardProps {
 function HealthCard({ icon, color, title, sub, value, unit, progress, route }: HealthCardProps) {
   const router = useRouter();
   return (
-    <TouchableOpacity style={s.card} onPress={() => router.push(route as any)} activeOpacity={0.75}>
+    <TouchableOpacity style={s.card} onPress={() => router.navigate(route as any)} activeOpacity={0.75}>
       <View style={s.cardTop}>
         <View style={[s.iconWrap, { backgroundColor: color + '22' }]}>
           <Ionicons name={icon} size={22} color={color} />

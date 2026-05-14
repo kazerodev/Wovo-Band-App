@@ -7,8 +7,6 @@ import { ProgressBar } from '@/components/ProgressBar';
 import { C } from '@/constants/colors';
 import { Button } from '@/components/Button';
 
-type Goals = typeof DEFAULT_GOALS;
-
 function GoalInput({ label, value, onChangeText, unit }: {
   label: string; value: string; onChangeText: (v: string) => void; unit: string;
 }) {
@@ -66,7 +64,6 @@ export default function GoalsScreen() {
       </View>
 
       {/* Edit goals */}
-      <Text style={s.sectionLabel}>{t('goals_title')}</Text>
       <View style={[s.card, s.formCard]}>
         <GoalInput label={t('goals_steps')}  value={goals.steps}         onChangeText={v => setGoals(g => ({ ...g, steps: v }))}         unit="steps" />
         <GoalInput label={t('goals_sleep')}  value={goals.sleepHours}    onChangeText={v => setGoals(g => ({ ...g, sleepHours: v }))}     unit="h" />

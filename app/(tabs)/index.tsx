@@ -38,7 +38,7 @@ export default function DashboardScreen() {
             value={fmt(DEMO.steps)}
             sub={`${t('act_of')} ${fmt(DEMO.stepsGoal)}`}
             progress={DEMO.steps / DEMO.stepsGoal}
-            onPress={() => router.push('/(tabs)/activity')}
+            onPress={() => router.navigate('/(tabs)/activity')}
           />
         </View>
 
@@ -50,14 +50,14 @@ export default function DashboardScreen() {
             label={t('dash_heart')}
             value={DEMO.heartRate}
             unit={t('dash_bpm')}
-            onPress={() => router.push('/heartrate')}
+            onPress={() => router.navigate('/heartrate')}
           />
           <MetricCard
             icon="moon-outline"
             iconColor="#818CF8"
             label={t('dash_sleep')}
             value={sleepStr}
-            onPress={() => router.push('/sleep')}
+            onPress={() => router.navigate('/sleep')}
           />
         </View>
 
@@ -69,7 +69,7 @@ export default function DashboardScreen() {
             label={t('dash_calories')}
             value={DEMO.calories}
             unit={t('dash_kcal')}
-            onPress={() => router.push('/(tabs)/activity')}
+            onPress={() => router.navigate('/(tabs)/activity')}
           />
           <MetricCard
             icon="walk-outline"
@@ -78,7 +78,7 @@ export default function DashboardScreen() {
             value={DEMO.activeMinutes}
             unit={t('dash_min')}
             progress={DEMO.activeMinutes / DEMO.activeGoal}
-            onPress={() => router.push('/(tabs)/activity')}
+            onPress={() => router.navigate('/(tabs)/activity')}
           />
         </View>
 
@@ -90,7 +90,7 @@ export default function DashboardScreen() {
             label={t('dash_hrv')}
             value={DEMO.hrv}
             unit={t('dash_ms')}
-            onPress={() => router.push('/hrv')}
+            onPress={() => router.navigate('/hrv')}
           />
           <MetricCard
             icon="battery-charging-outline"
@@ -98,7 +98,7 @@ export default function DashboardScreen() {
             label={t('dash_battery')}
             value={`${DEMO.battery}%`}
             progress={DEMO.battery / 100}
-            onPress={() => router.push('/(tabs)/device')}
+            onPress={() => router.navigate('/(tabs)/device')}
           />
         </View>
       </View>

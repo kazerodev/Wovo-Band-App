@@ -12,37 +12,44 @@ export default function TabsLayout() {
           backgroundColor: C.bg2,
           borderTopColor: C.border,
           borderTopWidth: 1,
-          height: 60,
+          height: 62,
           paddingBottom: 8,
         },
-        tabBarActiveTintColor: C.pri,
+        tabBarActiveTintColor:   C.pri,
         tabBarInactiveTintColor: C.muted,
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '500' },
-        headerStyle: { backgroundColor: C.bg2 },
-        headerTintColor: C.text,
-        headerTitleStyle: { fontWeight: '700', fontSize: 18 },
+        tabBarLabelStyle: { fontSize: 10, fontWeight: '600' },
+        headerStyle:      { backgroundColor: C.bg2 },
+        headerTintColor:  C.text,
+        headerTitleStyle: { fontWeight: '700', fontSize: 17 },
         headerShadowVisible: false,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: t('tab_home'),
-          tabBarIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color} />,
+          title: t('tab_dashboard'),
+          tabBarIcon: ({ color, size }) => <Ionicons name="grid-outline" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="product"
+        name="activity"
         options={{
-          title: t('tab_product'),
+          title: t('tab_activity'),
+          tabBarIcon: ({ color, size }) => <Ionicons name="body-outline" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="health"
+        options={{
+          title: t('tab_health'),
+          tabBarIcon: ({ color, size }) => <Ionicons name="heart-outline" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="device"
+        options={{
+          title: t('tab_device'),
           tabBarIcon: ({ color, size }) => <Ionicons name="watch-outline" size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="pricing"
-        options={{
-          title: t('tab_order'),
-          tabBarIcon: ({ color, size }) => <Ionicons name="cart-outline" size={size} color={color} />,
         }}
       />
       <Tabs.Screen

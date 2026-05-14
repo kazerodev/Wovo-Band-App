@@ -8,22 +8,24 @@ import { C } from '@/constants/colors';
 
 interface RowProps {
   icon: React.ComponentProps<typeof Ionicons>['name'];
+  iconColor?: string;
   label: string;
   sub?: string;
   onPress: () => void;
+  last?: boolean;
 }
 
-function Row({ icon, label, sub, onPress }: RowProps) {
+function Row({ icon, iconColor = C.pri, label, sub, onPress, last }: RowProps) {
   return (
-    <TouchableOpacity style={s.row} onPress={onPress} activeOpacity={0.7}>
-      <View style={s.rowIcon}>
-        <Ionicons name={icon} size={20} color={C.pri} />
+    <TouchableOpacity style={[r.row, !last && r.border]} onPress={onPress} activeOpacity={0.7}>
+      <View style={[r.icon, { backgroundColor: iconColor + '20' }]}>
+        <Ionicons name={icon} size={18} color={iconColor} />
       </View>
-      <View style={s.rowText}>
-        <Text style={s.rowLabel}>{label}</Text>
-        {sub ? <Text style={s.rowSub}>{sub}</Text> : null}
+      <View style={r.text}>
+        <Text style={r.label}>{label}</Text>
+        {sub ? <Text style={r.sub}>{sub}</Text> : null}
       </View>
-      <Ionicons name="chevron-forward" size={16} color={C.muted} />
+      <Ionicons name="chevron-forward" size={14} color={C.muted} />
     </TouchableOpacity>
   );
 }
@@ -35,38 +37,32 @@ export default function MoreScreen() {
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content}>
       <View style={s.section}>
-        <Row
-          icon="help-circle-outline"
-          label={t('more_faq')}
-          onPress={() => router.push('/faq')}
-        />
-        <Row
-          icon="document-text-outline"
-          label={t('more_legal')}
-          onPress={() => router.push('/legal')}
-        />
-        <Row
-          icon="language-outline"
-          label={t('more_lang')}
-          onPress={() => router.push('/settings')}
-        />
+        <Row icon="cart-outline"     iconColor={C.pri}      label={t('more_shop')}    onPress={() => router.push('/shop')} />
+        <Row icon="person-outline"   iconColor="#818CF8"    label={t('more_profile')} onPress={() => router.push('/profile')} />
+        <Row icon="flag-outline"     iconColor="#34D399"    label={t('more_goals')}   onPress={() => router.push('/goals')} last />
+      </View>
+
+      <View style={s.section}>
+        <Row icon="help-circle-outline"   iconColor={C.muted2}  label={t('more_faq')}     onPress={() => router.push('/faq')} />
+        <Row icon="document-text-outline" iconColor={C.muted2}  label={t('more_legal')}   onPress={() => router.push('/legal')} />
+        <Row icon="language-outline"      iconColor={C.muted2}  label={t('more_lang')}    onPress={() => router.push('/settings')} last />
       </View>
 
       <View style={s.section}>
         <Row
           icon="mail-outline"
+          iconColor={C.muted2}
           label={t('more_contact')}
           sub={t('more_contact_d')}
           onPress={() => Linking.openURL('mailto:hello@wovoband.com')}
         />
         <Row
           icon="globe-outline"
+          iconColor={C.muted2}
           label={t('more_site')}
           sub="wovoband.com"
-          onPress={() => WebBrowser.openBrowserAsync('https://wovoband.com', {
-            toolbarColor: C.bg2,
-            controlsColor: C.pri,
-          })}
+          onPress={() => WebBrowser.openBrowserAsync('https://wovoband.com', { toolbarColor: C.bg2, controlsColor: C.pri })}
+          last
         />
       </View>
 
@@ -77,47 +73,50 @@ export default function MoreScreen() {
 
 const s = StyleSheet.create({
   scroll: { backgroundColor: C.bg },
-  content: { padding: 20, paddingBottom: 48 },
+  content: { padding: 16, paddingBottom: 48, gap: 12 },
   section: {
     backgroundColor: C.card,
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: C.border,
-    marginBottom: 16,
     overflow: 'hidden',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: C.border,
-  },
-  rowIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: C.card2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  rowText: { flex: 1 },
-  rowLabel: {
-    fontSize: 15,
-    color: C.text,
-    fontWeight: '500',
-  },
-  rowSub: {
-    fontSize: 12,
-    color: C.muted,
-    marginTop: 1,
   },
   version: {
     textAlign: 'center',
     color: C.muted,
     fontSize: 12,
-    marginTop: 8,
+    marginTop: 4,
+  },
+});
+
+const r = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+  },
+  border: {
+    borderBottomWidth: 1,
+    borderBottomColor: C.border,
+  },
+  icon: {
+    width: 34,
+    height: 34,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  text: { flex: 1 },
+  label: {
+    fontSize: 15,
+    color: C.text,
+    fontWeight: '500',
+  },
+  sub: {
+    fontSize: 12,
+    color: C.muted,
+    marginTop: 1,
   },
 });

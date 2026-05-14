@@ -1,175 +1,138 @@
 import React from 'react';
-import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { DEMO } from '@/constants/demoData';
 import { useLang } from '@/context/LanguageContext';
-import { Button } from '@/components/Button';
+import { MetricCard } from '@/components/MetricCard';
+import { DemoModeBanner } from '@/components/DemoModeBanner';
 import { C } from '@/constants/colors';
 
-const FEATURES = [
-  { k: 'home_feat1', icon: 'heart-outline' as const },
-  { k: 'home_feat2', icon: 'moon-outline' as const },
-  { k: 'home_feat3', icon: 'pulse-outline' as const },
-  { k: 'home_feat4', icon: 'walk-outline' as const },
-  { k: 'home_feat5', icon: 'battery-charging-outline' as const },
-  { k: 'home_feat6', icon: 'water-outline' as const },
-];
+function fmt(n: number) {
+  return n.toLocaleString('en');
+}
 
-export default function HomeScreen() {
+export default function DashboardScreen() {
   const { t } = useLang();
   const router = useRouter();
 
+  const sleepStr = `${Math.floor(DEMO.sleepHours)}${t('dash_h')} ${Math.round((DEMO.sleepHours % 1) * 60)}${t('dash_min')}`;
+
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* Hero */}
-      <LinearGradient colors={[C.bg2, C.bg]} style={s.hero}>
-        <Image
-          source={{ uri: 'https://wovoband.com/images/wovo-product-hero.webp' }}
-          style={s.heroImg}
-          resizeMode="contain"
-        />
-        <Text style={s.tagline}>{t('home_tagline')}</Text>
-        <Text style={s.sub}>{t('home_sub')}</Text>
+      {/* Header */}
+      <View style={s.header}>
+        <Text style={s.title}>{t('dash_today')}</Text>
+        <Text style={s.sub}>{t('dash_subtitle')}</Text>
+      </View>
 
-        <View style={s.badges}>
-          {(['home_badge1', 'home_badge2', 'home_badge3'] as const).map(k => (
-            <View key={k} style={s.badge}>
-              <Text style={s.badgeText}>{t(k)}</Text>
-            </View>
-          ))}
+      <DemoModeBanner />
+
+      {/* Metrics grid */}
+      <View style={s.grid}>
+        {/* Steps — full width to show progress bar */}
+        <View style={s.fullRow}>
+          <MetricCard
+            icon="footsteps-outline"
+            iconColor={C.pri}
+            label={t('dash_steps')}
+            value={fmt(DEMO.steps)}
+            sub={`${t('act_of')} ${fmt(DEMO.stepsGoal)}`}
+            progress={DEMO.steps / DEMO.stepsGoal}
+            onPress={() => router.push('/(tabs)/activity')}
+          />
         </View>
 
-        <Button
-          label={t('home_cta')}
-          onPress={() => router.push('/(tabs)/pricing')}
-          style={s.cta}
-        />
-      </LinearGradient>
+        {/* Heart rate + Sleep */}
+        <View style={s.row}>
+          <MetricCard
+            icon="heart-outline"
+            iconColor="#F87171"
+            label={t('dash_heart')}
+            value={DEMO.heartRate}
+            unit={t('dash_bpm')}
+            onPress={() => router.push('/heartrate')}
+          />
+          <MetricCard
+            icon="moon-outline"
+            iconColor="#818CF8"
+            label={t('dash_sleep')}
+            value={sleepStr}
+            onPress={() => router.push('/sleep')}
+          />
+        </View>
 
-      {/* Features */}
-      <View style={s.section}>
-        {FEATURES.map(({ k, icon }) => (
-          <View key={k} style={s.featRow}>
-            <View style={s.iconWrap}>
-              <Ionicons name={icon} size={22} color={C.pri} />
-            </View>
-            <View style={s.featText}>
-              <Text style={s.featTitle}>{t(`${k}_t`)}</Text>
-              <Text style={s.featDesc}>{t(`${k}_d`)}</Text>
-            </View>
-          </View>
-        ))}
+        {/* Calories + Active min */}
+        <View style={s.row}>
+          <MetricCard
+            icon="flame-outline"
+            iconColor="#FB923C"
+            label={t('dash_calories')}
+            value={DEMO.calories}
+            unit={t('dash_kcal')}
+            onPress={() => router.push('/(tabs)/activity')}
+          />
+          <MetricCard
+            icon="walk-outline"
+            iconColor="#34D399"
+            label={t('dash_active')}
+            value={DEMO.activeMinutes}
+            unit={t('dash_min')}
+            progress={DEMO.activeMinutes / DEMO.activeGoal}
+            onPress={() => router.push('/(tabs)/activity')}
+          />
+        </View>
+
+        {/* HRV + Battery */}
+        <View style={s.row}>
+          <MetricCard
+            icon="pulse-outline"
+            iconColor="#60A5FA"
+            label={t('dash_hrv')}
+            value={DEMO.hrv}
+            unit={t('dash_ms')}
+            onPress={() => router.push('/hrv')}
+          />
+          <MetricCard
+            icon="battery-charging-outline"
+            iconColor="#FBBF24"
+            label={t('dash_battery')}
+            value={`${DEMO.battery}%`}
+            progress={DEMO.battery / 100}
+            onPress={() => router.push('/(tabs)/device')}
+          />
+        </View>
       </View>
 
-      {/* Disclaimer */}
-      <View style={s.disclaimerWrap}>
-        <Text style={s.disclaimer}>{t('home_disclaimer')}</Text>
-      </View>
+      <Text style={s.disclaimer}>{t('dash_disclaimer')}</Text>
     </ScrollView>
   );
 }
 
 const s = StyleSheet.create({
   scroll: { backgroundColor: C.bg },
-  content: { paddingBottom: 40 },
-  hero: {
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 40,
-  },
-  heroImg: {
-    width: 220,
-    height: 220,
-    marginBottom: 24,
-  },
-  tagline: {
-    fontSize: 28,
+  content: { padding: 16, paddingBottom: 40, gap: 12 },
+  header: { paddingVertical: 4 },
+  title: {
+    fontSize: 22,
     fontWeight: '800',
     color: C.text,
-    textAlign: 'center',
-    lineHeight: 36,
-    marginBottom: 12,
+    marginBottom: 2,
   },
   sub: {
-    fontSize: 15,
-    color: C.muted2,
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 20,
-    paddingHorizontal: 8,
-  },
-  badges: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 8,
-    marginBottom: 28,
-  },
-  badge: {
-    backgroundColor: C.card,
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: C.border,
-  },
-  badgeText: {
-    color: C.muted2,
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  cta: { width: '100%' },
-  section: {
-    paddingHorizontal: 20,
-    paddingTop: 8,
-  },
-  featRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: C.card,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: C.border,
-    gap: 14,
-  },
-  iconWrap: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: C.card2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  featText: { flex: 1 },
-  featTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: C.text,
-    marginBottom: 4,
-  },
-  featDesc: {
     fontSize: 13,
-    color: C.muted2,
-    lineHeight: 19,
+    color: C.muted,
   },
-  disclaimerWrap: {
-    marginHorizontal: 20,
-    marginTop: 8,
-    padding: 14,
-    backgroundColor: C.card,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: C.border,
+  grid: { gap: 10 },
+  row: {
+    flexDirection: 'row',
+    gap: 10,
   },
+  fullRow: {},
   disclaimer: {
     fontSize: 11,
     color: C.muted,
-    lineHeight: 16,
     textAlign: 'center',
+    lineHeight: 16,
+    marginTop: 4,
   },
 });

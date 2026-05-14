@@ -8,7 +8,12 @@
     "userInterfaceStyle": "dark",
     "scheme": "wovoband",
     "splash": {
-      "backgroundColor": "#080810"
+      "image": "./assets/images/splash-icon.png",
+      "backgroundColor": "#080810",
+      "resizeMode": "contain"
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
     },
     "ios": {
       "supportsTablet": false,

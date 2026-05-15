@@ -189,7 +189,7 @@ export const T: Record<Lang, Record<string, string>> = {
     faq_q5: 'How does shipping work?',
     faq_a5: 'Orders are processed within 1–2 business days and shipped with tracking. Delivery typically takes 7–14 days depending on your location.',
     faq_q6: 'Which app does Wovo Band use?',
-    faq_a6: 'Wovo Band works with a free companion app available on iOS and Android. The app name may vary depending on the supplier batch. If you have trouble pairing, contact hello@wovoband.com and we will help you get set up.',
+    faq_a6: 'Wovo Band pairs with Kinora, a free companion app available on Android and iOS. Search "Kinora" on Google Play or the App Store. If you have trouble pairing, contact hello@wovoband.com.',
     faq_q7: 'What is your returns policy?',
     faq_a7: 'We offer a 30-day return guarantee on all orders. Contact hello@wovoband.com to start a return.',
 
@@ -382,7 +382,7 @@ export const T: Record<Lang, Record<string, string>> = {
     faq_q5: 'Hoe werkt de verzending?',
     faq_a5: 'Bestellingen worden binnen 1–2 werkdagen verwerkt en verzonden met tracking. Levering duurt doorgaans 7–14 dagen afhankelijk van je locatie.',
     faq_q6: 'Welke app gebruikt Wovo Band?',
-    faq_a6: 'Wovo Band werkt met een gratis app voor iOS en Android. De naam van de app kan variëren afhankelijk van de leveranciersbatch. Als je problemen hebt met koppelen, neem dan contact op via hello@wovoband.com.',
+    faq_a6: 'Wovo Band koppelt met Kinora, een gratis app voor Android en iOS. Zoek "Kinora" in de Play Store of App Store. Heb je problemen met koppelen? Neem contact op via hello@wovoband.com.',
     faq_q7: 'Wat is uw retourbeleid?',
     faq_a7: 'We bieden een 30-dagen retourgarantie op alle bestellingen. Neem contact op via hello@wovoband.com om een retour te starten.',
 
@@ -573,7 +573,7 @@ export const T: Record<Lang, Record<string, string>> = {
     faq_q5: 'Comment fonctionne la livraison ?',
     faq_a5: 'Les commandes sont traitées sous 1 à 2 jours ouvrés et expédiées avec suivi. La livraison prend généralement 7 à 14 jours selon votre localisation.',
     faq_q6: 'Quelle application utilise Wovo Band ?',
-    faq_a6: 'Wovo Band fonctionne avec une application gratuite disponible sur iOS et Android. Le nom peut varier selon le lot fournisseur. En cas de problème, contactez hello@wovoband.com.',
+    faq_a6: 'Wovo Band se connecte à Kinora, une application gratuite disponible sur Android et iOS. Cherchez "Kinora" sur Google Play ou l\'App Store. En cas de problème, contactez hello@wovoband.com.',
     faq_q7: 'Quelle est votre politique de retour ?',
     faq_a7: 'Nous offrons une garantie de retour de 30 jours. Contactez hello@wovoband.com pour initier un retour.',
 

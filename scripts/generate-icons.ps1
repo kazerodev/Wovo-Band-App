@@ -102,7 +102,7 @@ function New-Icon {
         $sf.Alignment  = [System.Drawing.StringAlignment]::Center
 
         # Spacing: draw letter by letter to simulate tracking
-        $text   = "WOVO  BAND"
+        $text   = "KINORA"
         $charW  = $fontSize * 0.68
         $totalW = $text.Length * $charW
         $startX = $cx - $totalW / 2.0

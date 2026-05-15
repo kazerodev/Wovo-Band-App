@@ -19,7 +19,6 @@ export default function DashboardScreen() {
 
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* Header */}
       <View style={s.header}>
         <Text style={s.title}>{t('dash_today')}</Text>
         <Text style={s.sub}>{t('dash_subtitle')}</Text>
@@ -27,7 +26,6 @@ export default function DashboardScreen() {
 
       <DemoModeBanner />
 
-      {/* Metrics grid */}
       <View style={s.grid}>
         {/* Steps — full width to show progress bar */}
         <View style={s.fullRow}>
@@ -42,7 +40,6 @@ export default function DashboardScreen() {
           />
         </View>
 
-        {/* Heart rate + Sleep */}
         <View style={s.row}>
           <MetricCard
             icon="heart-outline"
@@ -61,7 +58,6 @@ export default function DashboardScreen() {
           />
         </View>
 
-        {/* Calories + Active min */}
         <View style={s.row}>
           <MetricCard
             icon="flame-outline"
@@ -82,7 +78,6 @@ export default function DashboardScreen() {
           />
         </View>
 
-        {/* HRV + Battery */}
         <View style={s.row}>
           <MetricCard
             icon="pulse-outline"

@@ -10,8 +10,8 @@ export const T: Record<Lang, Record<string, string>> = {
     tab_more:      'More',
 
     // ── Dashboard ─────────────────────────────────────────
-    dash_today:      "Today's overview",
-    dash_subtitle:   'Your daily wellness at a glance',
+    dash_today:      'Today',
+    dash_subtitle:   'Overview',
     dash_steps:      'Steps',
     dash_heart:      'Heart rate',
     dash_sleep:      'Sleep',
@@ -50,7 +50,7 @@ export const T: Record<Lang, Record<string, string>> = {
     health_heart:     'Heart Rate',
     health_heart_sub: 'Current & resting heart rate',
     health_hrv:       'HRV & Recovery',
-    health_hrv_sub:   'Track trends over time',
+    health_hrv_sub:   '7-day trend',
     health_note:      'Wellness data is for general information only. Not for medical use.',
 
     // ── Sleep ─────────────────────────────────────────────
@@ -65,7 +65,7 @@ export const T: Record<Lang, Record<string, string>> = {
     sleep_trend:    '7-day sleep trend',
     sleep_h:        'h',
     sleep_min:      'min',
-    sleep_tip:      'Try keeping a consistent sleep schedule for better sleep quality.',
+    sleep_tip:      'Consistent sleep times tend to improve sleep quality.',
     sleep_note:     'For general wellness tracking only.',
 
     // ── Heart rate ────────────────────────────────────────
@@ -214,8 +214,8 @@ export const T: Record<Lang, Record<string, string>> = {
     tab_device:    'Apparaat',
     tab_more:      'Meer',
 
-    dash_today:      'Overzicht vandaag',
-    dash_subtitle:   'Jouw dagelijks welzijn in één oogopslag',
+    dash_today:      'Vandaag',
+    dash_subtitle:   'Overzicht',
     dash_steps:      'Stappen',
     dash_heart:      'Hartslag',
     dash_sleep:      'Slaap',
@@ -252,7 +252,7 @@ export const T: Record<Lang, Record<string, string>> = {
     health_heart:     'Hartslag',
     health_heart_sub: 'Huidige & rusthartslag',
     health_hrv:       'HRV & Herstel',
-    health_hrv_sub:   'Volg trends in de tijd',
+    health_hrv_sub:   'Trend 7 dagen',
     health_note:      'Welzijnsdata is uitsluitend voor algemene informatie. Niet voor medisch gebruik.',
 
     sleep_title:    'Slaap',
@@ -266,7 +266,7 @@ export const T: Record<Lang, Record<string, string>> = {
     sleep_trend:    'Slaaptrend 7 dagen',
     sleep_h:        'u',
     sleep_min:      'min',
-    sleep_tip:      'Probeer een consistent slaapschema aan te houden voor een betere slaapkwaliteit.',
+    sleep_tip:      'Vaste slaaptijden helpen de slaapkwaliteit te verbeteren.',
     sleep_note:     'Uitsluitend voor algemeen welzijnsbeheer.',
 
     hr_title:    'Hartslag',
@@ -405,8 +405,8 @@ export const T: Record<Lang, Record<string, string>> = {
     tab_device:    'Appareil',
     tab_more:      'Plus',
 
-    dash_today:      "Vue d'aujourd'hui",
-    dash_subtitle:   'Votre bien-être quotidien en un coup d\'œil',
+    dash_today:      "Aujourd'hui",
+    dash_subtitle:   'Vue d\'ensemble',
     dash_steps:      'Pas',
     dash_heart:      'Fréquence cardiaque',
     dash_sleep:      'Sommeil',
@@ -443,7 +443,7 @@ export const T: Record<Lang, Record<string, string>> = {
     health_heart:     'Fréquence cardiaque',
     health_heart_sub: 'Fréquence actuelle et au repos',
     health_hrv:       'VFC & Récupération',
-    health_hrv_sub:   'Suivez les tendances au fil du temps',
+    health_hrv_sub:   '7 derniers jours',
     health_note:      'Les données de bien-être sont à titre informatif uniquement. Pas à usage médical.',
 
     sleep_title:    'Sommeil',
@@ -457,7 +457,7 @@ export const T: Record<Lang, Record<string, string>> = {
     sleep_trend:    'Tendance sommeil 7 jours',
     sleep_h:        'h',
     sleep_min:      'min',
-    sleep_tip:      'Essayez de maintenir un horaire de sommeil régulier pour une meilleure qualité de sommeil.',
+    sleep_tip:      'Des horaires de sommeil réguliers améliorent généralement la qualité du sommeil.',
     sleep_note:     'Pour le suivi général du bien-être uniquement.',
 
     hr_title:    'Fréquence cardiaque',

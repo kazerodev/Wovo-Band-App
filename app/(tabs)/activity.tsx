@@ -28,7 +28,6 @@ export default function ActivityScreen() {
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <DemoModeBanner />
 
-      {/* Steps card */}
       <View style={s.card}>
         <Text style={s.sectionLabel}>{t('act_progress')}</Text>
         <View style={s.stepsRow}>
@@ -39,7 +38,6 @@ export default function ActivityScreen() {
         <Text style={s.stepsCaption}>{Math.round(stepsPct * 100)}% {t('act_goal').toLowerCase()}</Text>
       </View>
 
-      {/* Stats grid */}
       <View style={s.statsGrid}>
         <Stat label={t('act_distance')} value={DEMO.distance} unit={t('act_km')} color={C.pri} />
         <Stat label={t('act_calories')} value={DEMO.calories} unit={t('act_kcal')} color="#FB923C" />
@@ -56,7 +54,6 @@ export default function ActivityScreen() {
         </View>
       </View>
 
-      {/* Weekly chart */}
       <View style={s.card}>
         <Text style={s.sectionLabel}>{t('act_week')}</Text>
         <WeekBarChart data={DEMO.weeklySteps} color={C.pri} height={80} />

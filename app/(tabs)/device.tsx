@@ -37,7 +37,6 @@ export default function DeviceScreen() {
 
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* Band card */}
       <View style={s.bandCard}>
         <View style={s.bandTop}>
           <View style={s.bandIcon}>
@@ -52,7 +51,6 @@ export default function DeviceScreen() {
           </View>
         </View>
 
-        {/* Battery */}
         <View style={s.battRow}>
           <Text style={s.battLabel}>{t('device_battery')}</Text>
           <Text style={s.battValue}>{DEMO.battery}%</Text>
@@ -78,7 +76,6 @@ export default function DeviceScreen() {
         </View>
       </View>
 
-      {/* Preferences */}
       <View style={s.sectionTitle}>
         <Text style={s.sectionTitleText}>{t('device_settings_title')}</Text>
       </View>

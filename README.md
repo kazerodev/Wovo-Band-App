@@ -1,9 +1,10 @@
-# Kinora — companion app for Wovo Band
+# Kinora
 
-Kinora is the official companion app for the **Wovo Band** smart fitness tracker.
-Track steps, heart rate, sleep, HRV, recovery, and daily activity — all in one dark-premium interface.
+Companion app for the Wovo Band fitness tracker.
 
-Built with **Expo SDK 54 · React Native 0.81.5 · TypeScript · expo-router v4**.
+Tracks steps, heart rate, sleep, HRV, recovery, and daily activity.
+
+**Stack:** Expo SDK 54 · React Native 0.81.5 · TypeScript · expo-router v4
 
 ---
 
@@ -11,7 +12,7 @@ Built with **Expo SDK 54 · React Native 0.81.5 · TypeScript · expo-router v4*
 
 - Node.js 18+
 - npm 9+
-- [Expo Go](https://expo.dev/client) on your Android or iOS device (for local testing)
+- [Expo Go](https://expo.dev/client) on your Android device (for local testing)
 - [EAS CLI](https://docs.expo.dev/eas/) for building APK / AAB
 
 ---
@@ -24,51 +25,42 @@ npm install --legacy-peer-deps
 
 ---
 
-## Run with Expo (dev mode)
+## Development
 
 ```bash
 npx expo start
-# or on a specific port:
-npx expo start --port 8082
 ```
 
-Scan the QR code in the terminal with the Expo Go app on your device.
+Scan the QR code with Expo Go.
 
 ---
 
-## Test on Android (without device)
-
-Validate the bundle compiles cleanly:
+## Validate bundle
 
 ```bash
 npx expo export --platform android
 ```
 
-No errors = bundle is valid.
-
 ---
 
-## Generate APK (for testing)
-
-Requires an [Expo account](https://expo.dev) and EAS CLI installed:
+## Build APK (for testing)
 
 ```bash
-npm install -g eas-cli
 eas login
 eas build --platform android --profile preview
 ```
 
-This produces a `.apk` you can install directly on any Android device.
+Produces a `.apk` you can install directly on any Android device.
 
 ---
 
-## Generate AAB (for Google Play)
+## Build AAB (for Google Play)
 
 ```bash
 eas build --platform android --profile production
 ```
 
-This produces a `.aab` (Android App Bundle) ready to upload to Google Play.
+Produces a `.aab` ready to upload to Google Play.
 
 ---
 
@@ -76,9 +68,9 @@ This produces a `.aab` (Android App Bundle) ready to upload to Google Play.
 
 1. Go to [Google Play Console](https://play.google.com/console)
 2. Create a new app → **Kinora**
-3. Complete the store listing (see `docs/play-store-listing.md`)
-4. Under **Release → Internal testing** → upload the `.aab`
-5. Once approved, promote to production
+3. Under **Release → Internal testing** → upload the `.aab`
+4. Complete store listing, screenshots, and privacy policy
+5. Promote to production when approved
 
 ---
 
@@ -89,41 +81,37 @@ app/
   (tabs)/          # Bottom tab screens
     index.tsx      # Dashboard
     activity.tsx   # Steps + weekly chart
-    health.tsx     # Health hub (Sleep / HR / HRV)
-    device.tsx     # Device settings (demo mode)
+    health.tsx     # Sleep / HR / HRV overview
+    device.tsx     # Device screen (demo mode)
     more.tsx       # Shop, Profile, Goals, FAQ, Legal
-  sleep.tsx        # Sleep detail screen
-  heartrate.tsx    # Heart rate detail screen
-  hrv.tsx          # HRV & recovery detail screen
-  goals.tsx        # Editable daily goals
-  profile.tsx      # User profile (stored locally)
-  shop.tsx         # Buy Wovo Band (Stripe Payment Links)
-  settings.tsx     # Language selector
-  faq.tsx          # FAQ
-  legal.tsx        # Legal / disclaimer
+  sleep.tsx
+  heartrate.tsx
+  hrv.tsx
+  goals.tsx
+  profile.tsx
+  shop.tsx
+  settings.tsx
+  faq.tsx
+  legal.tsx
 
-components/        # Shared UI: Button, MetricCard, ProgressBar, WeekBarChart, DemoModeBanner
-constants/         # Colors, demoData, i18n (EN/NL/FR), storage keys
-context/           # LanguageContext (AsyncStorage-persisted)
-hooks/             # useBandData (BLE-ready stub)
-scripts/           # generate-icons.ps1 (PNG icon generator)
+components/        # Button, MetricCard, ProgressBar, WeekBarChart, DemoModeBanner
+constants/         # colors, demoData, i18n (EN/NL/FR), storage keys
+context/           # LanguageContext
+hooks/             # useBandData (BLE stub)
 ```
 
 ---
 
-## What's missing before publishing
+## Before publishing
 
-- [ ] Real BLE connection to Wovo Band hardware (see `hooks/useBandData.ts`)
-- [ ] Replace demo data with live sensor readings
-- [ ] Privacy policy page hosted at a public URL
-- [ ] Google Play store screenshots (5 required)
-- [ ] `google-services-key.json` for automated Google Play submission
-- [ ] App signing keystore (generated automatically by EAS on first build)
-- [ ] Final review of legal disclaimers with legal counsel
+- [ ] BLE connection to Wovo Band hardware (`hooks/useBandData.ts`)
+- [ ] Live sensor data replacing demo values
+- [ ] Privacy policy at a public URL
+- [ ] Google Play screenshots (min. 2)
+- [ ] App signing keystore (EAS generates on first build)
 
 ---
 
 ## Contact
 
-Support: hello@wovoband.com  
-Website: https://wovoband.com
+hello@wovoband.com

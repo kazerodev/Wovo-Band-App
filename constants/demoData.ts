@@ -1,5 +1,4 @@
 export const DEMO = {
-  // Today's metrics
   steps:          8420,
   stepsGoal:      10000,
   heartRate:      72,

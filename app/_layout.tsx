@@ -1,6 +1,8 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { LanguageProvider, useLang } from '@/context/LanguageContext';
+import { AuthProvider } from '@/context/AuthContext';
+import { BleProvider } from '@/context/BleContext';
 import { C } from '@/constants/colors';
 
 const HEADER_OPTIONS = {
@@ -34,8 +36,12 @@ function AppStack() {
 export default function RootLayout() {
   return (
     <LanguageProvider>
-      <StatusBar style="light" />
-      <AppStack />
+      <AuthProvider>
+        <BleProvider>
+          <StatusBar style="light" />
+          <AppStack />
+        </BleProvider>
+      </AuthProvider>
     </LanguageProvider>
   );
 }

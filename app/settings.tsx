@@ -9,6 +9,7 @@ const LANGS: { code: Lang; labelKey: string }[] = [
   { code: 'en', labelKey: 'lang_en' },
   { code: 'nl', labelKey: 'lang_nl' },
   { code: 'fr', labelKey: 'lang_fr' },
+  { code: 'es', labelKey: 'lang_es' },
 ];
 
 export default function SettingsScreen() {

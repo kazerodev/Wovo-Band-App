@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import {
+  ScrollView, View, Text, TextInput,
+  TouchableOpacity, StyleSheet, Alert, ActivityIndicator,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { DEFAULT_PROFILE } from '@/constants/demoData';
 import { KEYS, load, save } from '@/constants/storage';
 import { useLang } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/Button';
 import { C } from '@/constants/colors';
 
@@ -32,6 +37,7 @@ function Field({ label, value, onChangeText, placeholder, keyboardType = 'defaul
 
 export default function ProfileScreen() {
   const { t } = useLang();
+  const { user, loading: authLoading, configured, signInWithGoogle, signOut } = useAuth();
   const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
 
   useEffect(() => {
@@ -47,10 +53,45 @@ export default function ProfileScreen() {
     Alert.alert('', t('profile_saved'));
   }
 
+  function initials(name: string) {
+    return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  }
+
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <Text style={s.title}>{t('profile_title')}</Text>
 
+      {/* Google Account */}
+      <Text style={s.sectionLabel}>{t('google_account')}</Text>
+      <View style={s.card}>
+        {authLoading ? (
+          <View style={s.authRow}><ActivityIndicator color={C.pri} /></View>
+        ) : user ? (
+          <View style={s.authRow}>
+            <View style={s.avatar}>
+              <Text style={s.avatarText}>{initials(user.name)}</Text>
+            </View>
+            <View style={s.authInfo}>
+              <Text style={s.authName}>{user.name}</Text>
+              <Text style={s.authEmail}>{user.email}</Text>
+            </View>
+            <TouchableOpacity style={s.signOutBtn} onPress={signOut} activeOpacity={0.8}>
+              <Text style={s.signOutText}>{t('google_signout')}</Text>
+            </TouchableOpacity>
+          </View>
+        ) : configured ? (
+          <TouchableOpacity style={s.googleBtn} onPress={signInWithGoogle} activeOpacity={0.85}>
+            <Ionicons name="logo-google" size={18} color="#fff" />
+            <Text style={s.googleBtnText}>{t('google_signin')}</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={s.authRow}>
+            <Text style={s.setupNote}>{t('google_setup')}</Text>
+          </View>
+        )}
+      </View>
+
+      {/* Personal info */}
       <Text style={s.sectionLabel}>{t('profile_personal')}</Text>
       <View style={s.card}>
         <Field
@@ -100,7 +141,6 @@ export default function ProfileScreen() {
       </View>
 
       <Button label={t('profile_save')} onPress={handleSave} />
-
       <Text style={s.note}>{t('profile_note')}</Text>
     </ScrollView>
   );
@@ -112,6 +152,28 @@ const s = StyleSheet.create({
   title: { fontSize: 22, fontWeight: '800', color: C.text, marginBottom: 4 },
   sectionLabel: { fontSize: 12, fontWeight: '700', color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, paddingHorizontal: 2 },
   card: { backgroundColor: C.card, borderRadius: 14, borderWidth: 1, borderColor: C.border, overflow: 'hidden' },
+  authRow: { flexDirection: 'row', alignItems: 'center', padding: 14, gap: 12 },
+  avatar: {
+    width: 44, height: 44, borderRadius: 22,
+    backgroundColor: C.pri + '33',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  avatarText: { fontSize: 16, fontWeight: '700', color: C.pri },
+  authInfo: { flex: 1 },
+  authName:  { fontSize: 15, fontWeight: '700', color: C.text },
+  authEmail: { fontSize: 12, color: C.muted, marginTop: 2 },
+  signOutBtn: {
+    borderRadius: 8, borderWidth: 1, borderColor: C.border,
+    paddingHorizontal: 10, paddingVertical: 6,
+  },
+  signOutText: { fontSize: 12, color: C.muted2, fontWeight: '600' },
+  googleBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
+    margin: 14, padding: 12, borderRadius: 10,
+    backgroundColor: '#4285F4',
+  },
+  googleBtnText: { fontSize: 14, color: '#fff', fontWeight: '600' },
+  setupNote: { fontSize: 12, color: C.muted, flex: 1, lineHeight: 18 },
   genderRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 4 },
   gChip: {
     paddingHorizontal: 12, paddingVertical: 6,

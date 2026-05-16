@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
   ScrollView, View, Text, TouchableOpacity,
-  Switch, StyleSheet, Alert, ActivityIndicator,
+  Switch, StyleSheet, ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { DEMO, DEFAULT_DEVICE } from '@/constants/demoData';
 import { KEYS, load, save } from '@/constants/storage';
 import { useLang } from '@/context/LanguageContext';
+import { useBle } from '@/context/BleContext';
 import { ProgressBar } from '@/components/ProgressBar';
 import { C } from '@/constants/colors';
 
@@ -20,9 +21,15 @@ function nowHHMM() {
 
 export default function DeviceScreen() {
   const { t } = useLang();
+  const {
+    bleEnabled, scanning, devices, connectedDevice,
+    requestPermissions, startScan, stopScan, connect, disconnect,
+  } = useBle();
+
   const [settings, setSettings] = useState<DeviceSettings>(DEFAULT_DEVICE);
   const [lastSync, setLastSync]  = useState('');
   const [syncing, setSyncing]    = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -40,14 +47,6 @@ export default function DeviceScreen() {
     await save(KEYS.DEVICE, next);
   }
 
-  function handlePair() {
-    Alert.alert(
-      t('device_pair'),
-      'Bluetooth connection will be available once the Wovo Band hardware profile is added.',
-      [{ text: 'OK' }]
-    );
-  }
-
   async function handleSync() {
     setSyncing(true);
     await new Promise(r => setTimeout(r, 1200));
@@ -57,22 +56,93 @@ export default function DeviceScreen() {
     setSyncing(false);
   }
 
+  async function handleScan() {
+    if (hasPermission === null || !hasPermission) {
+      const granted = await requestPermissions();
+      setHasPermission(granted);
+      if (!granted) return;
+    }
+    if (scanning) { stopScan(); return; }
+    startScan();
+  }
+
+  const bleStatusColor = connectedDevice ? C.success : bleEnabled ? C.pri : C.muted;
+  const bleStatusText  = connectedDevice
+    ? t('ble_connected')
+    : bleEnabled ? t('ble_disconnected') : t('ble_disabled');
+
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      <View style={s.bandCard}>
-        <View style={s.bandTop}>
-          <View style={s.bandIcon}>
-            <Ionicons name="watch-outline" size={32} color={C.pri} />
-          </View>
-          <View style={s.bandInfo}>
-            <Text style={s.bandName}>{t('device_name')}</Text>
-            <View style={s.demoTag}>
-              <Ionicons name="information-circle" size={12} color="#FBBF24" />
-              <Text style={s.demoText}>{t('device_mode')}</Text>
-            </View>
-          </View>
+
+      {/* BLE connection card */}
+      <View style={s.bleCard}>
+        <View style={s.bleHeader}>
+          <View style={[s.bleDot, { backgroundColor: bleStatusColor }]} />
+          <Text style={s.bleTitle}>{t('device_name')}</Text>
+          <Text style={[s.bleStatus, { color: bleStatusColor }]}>{bleStatusText}</Text>
         </View>
 
+        {connectedDevice ? (
+          <View style={s.connectedBox}>
+            <Ionicons name="bluetooth" size={20} color={C.success} />
+            <View style={{ flex: 1 }}>
+              <Text style={s.connName}>{connectedDevice.name ?? connectedDevice.id}</Text>
+              {connectedDevice.rssi != null && (
+                <Text style={s.connRssi}>{t('ble_rssi')}: {connectedDevice.rssi} dBm</Text>
+              )}
+            </View>
+            <TouchableOpacity style={s.disconnectBtn} onPress={disconnect} activeOpacity={0.8}>
+              <Text style={s.disconnectText}>{t('ble_disconnect')}</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={[s.scanBtn, !bleEnabled && s.scanBtnDisabled]}
+              onPress={handleScan}
+              disabled={!bleEnabled}
+              activeOpacity={0.8}
+            >
+              {scanning
+                ? <ActivityIndicator size={14} color={C.pri} />
+                : <Ionicons name="bluetooth-outline" size={16} color={bleEnabled ? C.pri : C.muted} />
+              }
+              <Text style={[s.scanText, !bleEnabled && { color: C.muted }]}>
+                {scanning ? t('ble_scanning') : t('ble_scan')}
+              </Text>
+            </TouchableOpacity>
+
+            {devices.length > 0 && (
+              <View style={s.deviceList}>
+                {devices.map(device => (
+                  <TouchableOpacity
+                    key={device.id}
+                    style={s.deviceRow}
+                    onPress={() => connect(device)}
+                    activeOpacity={0.75}
+                  >
+                    <Ionicons name="watch-outline" size={18} color={C.muted2} />
+                    <View style={{ flex: 1 }}>
+                      <Text style={s.deviceName}>{device.name}</Text>
+                      {device.rssi != null && (
+                        <Text style={s.deviceRssi}>{device.rssi} dBm</Text>
+                      )}
+                    </View>
+                    <Text style={s.connectText}>{t('ble_connect')}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+
+            {!scanning && devices.length === 0 && bleEnabled && (
+              <Text style={s.noDevices}>{t('ble_no_devices')}</Text>
+            )}
+          </>
+        )}
+      </View>
+
+      {/* Demo device info */}
+      <View style={s.bandCard}>
         <View style={s.battRow}>
           <Text style={s.battLabel}>{t('device_battery')}</Text>
           <Text style={s.battValue}>{DEMO.battery}%</Text>
@@ -86,26 +156,20 @@ export default function DeviceScreen() {
 
         <Text style={s.demoNote}>{t('device_mode_note')}</Text>
 
-        <View style={s.btnRow}>
-          <TouchableOpacity style={s.btn} onPress={handlePair} activeOpacity={0.8}>
-            <Ionicons name="bluetooth-outline" size={16} color={C.text} />
-            <Text style={s.btnText}>{t('device_pair')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[s.btn, s.btnOutline, syncing && s.btnDisabled]}
-            onPress={handleSync}
-            disabled={syncing}
-            activeOpacity={0.8}
-          >
-            {syncing
-              ? <ActivityIndicator size={14} color={C.pri} />
-              : <Ionicons name="sync-outline" size={16} color={C.pri} />
-            }
-            <Text style={[s.btnText, { color: C.pri }]}>
-              {syncing ? t('sync_syncing') : t('device_sync_btn')}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[s.btn, s.btnOutline, syncing && s.btnDisabled]}
+          onPress={handleSync}
+          disabled={syncing}
+          activeOpacity={0.8}
+        >
+          {syncing
+            ? <ActivityIndicator size={14} color={C.pri} />
+            : <Ionicons name="sync-outline" size={16} color={C.pri} />
+          }
+          <Text style={[s.btnText, { color: C.pri }]}>
+            {syncing ? t('sync_syncing') : t('device_sync_btn')}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={s.sectionTitle}>
@@ -118,7 +182,7 @@ export default function DeviceScreen() {
           right={
             <Switch
               value={settings.notifications}
-              onValueChange={(v) => update({ notifications: v })}
+              onValueChange={v => update({ notifications: v })}
               trackColor={{ false: C.border, true: C.pri }}
               thumbColor={C.text}
             />
@@ -187,7 +251,8 @@ function PrefRow({ label, right, noBorder }: { label: string; right: React.React
 const s = StyleSheet.create({
   scroll: { backgroundColor: C.bg },
   content: { padding: 16, paddingBottom: 40, gap: 12 },
-  bandCard: {
+
+  bleCard: {
     backgroundColor: C.card,
     borderRadius: 14,
     borderWidth: 1,
@@ -195,60 +260,75 @@ const s = StyleSheet.create({
     padding: 16,
     gap: 12,
   },
-  bandTop: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  bandIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 14,
-    backgroundColor: C.card2,
-    alignItems: 'center',
-    justifyContent: 'center',
+  bleHeader: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  bleDot: { width: 8, height: 8, borderRadius: 4 },
+  bleTitle: { flex: 1, fontSize: 16, fontWeight: '700', color: C.text },
+  bleStatus: { fontSize: 12, fontWeight: '600' },
+
+  connectedBox: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    backgroundColor: C.card2, borderRadius: 10, padding: 12,
+    borderWidth: 1, borderColor: C.success + '44',
   },
-  bandInfo: { flex: 1 },
-  bandName: { fontSize: 18, fontWeight: '700', color: C.text, marginBottom: 4 },
-  demoTag: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  demoText: { fontSize: 12, color: '#FBBF24', fontWeight: '500' },
+  connName: { fontSize: 14, fontWeight: '700', color: C.text },
+  connRssi: { fontSize: 11, color: C.muted, marginTop: 2 },
+  disconnectBtn: {
+    borderRadius: 8, borderWidth: 1, borderColor: C.border,
+    paddingHorizontal: 10, paddingVertical: 6,
+  },
+  disconnectText: { fontSize: 12, color: C.muted2, fontWeight: '600' },
+
+  scanBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: 6, borderRadius: 10, paddingVertical: 12,
+    borderWidth: 1, borderColor: C.pri, backgroundColor: 'transparent',
+  },
+  scanBtnDisabled: { borderColor: C.border },
+  scanText: { fontSize: 13, color: C.pri, fontWeight: '600' },
+
+  deviceList: { gap: 2 },
+  deviceRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 10,
+    paddingVertical: 10, paddingHorizontal: 4,
+    borderBottomWidth: 1, borderBottomColor: C.border,
+  },
+  deviceName: { fontSize: 14, color: C.text, fontWeight: '600' },
+  deviceRssi: { fontSize: 11, color: C.muted },
+  connectText: { fontSize: 12, color: C.pri, fontWeight: '700' },
+
+  noDevices: { fontSize: 12, color: C.muted, textAlign: 'center', paddingVertical: 4 },
+
+  bandCard: {
+    backgroundColor: C.card, borderRadius: 14,
+    borderWidth: 1, borderColor: C.border,
+    padding: 16, gap: 12,
+  },
   battRow: { flexDirection: 'row', justifyContent: 'space-between' },
   battLabel: { fontSize: 13, color: C.muted },
   battValue: { fontSize: 13, color: '#FBBF24', fontWeight: '700' },
   infoRow: { flexDirection: 'row', gap: 16 },
   demoNote: { fontSize: 11, color: C.muted, lineHeight: 16, fontStyle: 'italic' },
-  btnRow: { flexDirection: 'row', gap: 10 },
   btn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    backgroundColor: C.card2,
-    borderRadius: 10,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: C.border,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: 6, borderRadius: 10, paddingVertical: 12,
+    borderWidth: 1, borderColor: C.border,
   },
   btnOutline: { borderColor: C.pri, backgroundColor: 'transparent' },
   btnDisabled: { opacity: 0.6 },
   btnText: { fontSize: 13, color: C.text, fontWeight: '600' },
+
   sectionTitle: { paddingHorizontal: 4 },
   sectionTitleText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: C.muted,
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
+    fontSize: 12, fontWeight: '700', color: C.muted,
+    textTransform: 'uppercase', letterSpacing: 0.8,
   },
   prefCard: {
-    backgroundColor: C.card,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: C.border,
-    overflow: 'hidden',
+    backgroundColor: C.card, borderRadius: 14,
+    borderWidth: 1, borderColor: C.border, overflow: 'hidden',
   },
   segmented: {
-    flexDirection: 'row',
-    backgroundColor: C.card2,
-    borderRadius: 8,
-    overflow: 'hidden',
+    flexDirection: 'row', backgroundColor: C.card2,
+    borderRadius: 8, overflow: 'hidden',
   },
   seg: { paddingHorizontal: 12, paddingVertical: 6 },
   segActive: { backgroundColor: C.pri, borderRadius: 8 },
@@ -258,11 +338,8 @@ const s = StyleSheet.create({
 
 const pr = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 16, paddingVertical: 14,
   },
   border: { borderBottomWidth: 1, borderBottomColor: C.border },
   label: { fontSize: 15, color: C.text },

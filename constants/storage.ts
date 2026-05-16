@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const KEYS = {
-  LANG:    'wb-lang',
-  PROFILE: 'wb-profile',
-  GOALS:   'wb-goals',
-  DEVICE:  'wb-device',
+  LANG:      'wb-lang',
+  PROFILE:   'wb-profile',
+  GOALS:     'wb-goals',
+  DEVICE:    'wb-device',
+  ONBOARDED: 'wb-onboarded',
+  LAST_SYNC: 'wb-last-sync',
 } as const;
 
 export async function load<T>(key: string, fallback: T): Promise<T> {

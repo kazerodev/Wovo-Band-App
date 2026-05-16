@@ -78,9 +78,10 @@ export default function SleepScreen() {
         <Text style={s.chartUnit}>{t('sleep_h')}</Text>
       </View>
 
-      {/* Tip */}
       <View style={s.tipCard}>
-        <Text style={s.tipText}>💡 {t('sleep_tip')}</Text>
+        <Text style={s.tipText}>
+          {DEMO.sleepQuality >= 70 ? t('insight_sleep_good') : t('insight_sleep_ok')}
+        </Text>
       </View>
       <Text style={s.note}>{t('sleep_note')}</Text>
     </ScrollView>

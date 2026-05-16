@@ -66,6 +66,9 @@ export default function HeartRateScreen() {
         <Text style={s.chartNote}>24h — peak: {DEMO.maxHR} {t('hr_bpm')}</Text>
       </View>
 
+      <View style={s.insightCard}>
+        <Text style={s.insightText}>{t('insight_hr')}</Text>
+      </View>
       <Text style={s.note}>{t('hr_note')}</Text>
     </ScrollView>
   );
@@ -114,6 +117,8 @@ const s = StyleSheet.create({
   },
   chartNote: { fontSize: 11, color: C.muted, textAlign: 'center', marginTop: 4 },
   note: { fontSize: 11, color: C.muted, textAlign: 'center' },
+  insightCard: { backgroundColor: C.card2, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: C.border },
+  insightText: { fontSize: 13, color: C.muted2, lineHeight: 19 },
 });
 
 const bc = StyleSheet.create({

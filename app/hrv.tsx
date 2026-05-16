@@ -73,6 +73,9 @@ export default function HrvScreen() {
         <Text style={s.chartUnit}>{t('hrv_ms')}</Text>
       </View>
 
+      <View style={s.insightCard}>
+        <Text style={s.insightText}>{t('insight_hrv')}</Text>
+      </View>
       <Text style={s.note}>{t('hrv_note')}</Text>
     </ScrollView>
   );
@@ -107,4 +110,6 @@ const s = StyleSheet.create({
   sectionTitle: { fontSize: 12, color: C.muted, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.8 },
   chartUnit: { fontSize: 11, color: C.muted, textAlign: 'center', marginTop: 4 },
   note: { fontSize: 11, color: C.muted, textAlign: 'center', lineHeight: 16 },
+  insightCard: { backgroundColor: C.card2, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: C.border },
+  insightText: { fontSize: 13, color: C.muted2, lineHeight: 19 },
 });

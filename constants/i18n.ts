@@ -204,6 +204,35 @@ export const T: Record<Lang, Record<string, string>> = {
     lang_en:    'English',
     lang_nl:    'Dutch',
     lang_fr:    'French',
+
+    // ── Onboarding ────────────────────────────────────────
+    onboard_title:      'Set up Kinora',
+    onboard_sub:        'A few quick settings to get started',
+    onboard_name_label: 'Your name (optional)',
+    onboard_goal_steps: 'Daily step goal',
+    onboard_goal_sleep: 'Sleep goal (hours)',
+    onboard_units:      'Units',
+    onboard_metric:     'Metric (km, kg)',
+    onboard_imperial:   'Imperial (mi, lb)',
+    onboard_start:      'Get started',
+    onboard_skip:       'Skip for now',
+
+    // ── Sync ──────────────────────────────────────────────
+    sync_now:      'Sync now',
+    sync_done:     'Demo data refreshed',
+    sync_syncing:  'Syncing...',
+    sync_last:     'Last sync',
+    sync_never:    'Never',
+
+    // ── Insights ──────────────────────────────────────────
+    insight_sleep_good: 'Sleep quality looks good.',
+    insight_sleep_ok:   'Consistent sleep times tend to improve sleep quality.',
+    insight_hrv:        'Single-day HRV values vary. The 7-day trend is more meaningful.',
+    insight_hr:         'Resting heart rate can vary with sleep, stress and hydration.',
+    insight_calories:   'Calorie estimates from wearables are approximations only.',
+
+    // ── Goals (extras) ────────────────────────────────────
+    goals_calories: 'Calories goal',
   },
 
   // ─────────────────────────────────────────────────────────
@@ -395,6 +424,31 @@ export const T: Record<Lang, Record<string, string>> = {
     lang_en:    'Engels',
     lang_nl:    'Nederlands',
     lang_fr:    'Frans',
+
+    onboard_title:      'Kinora instellen',
+    onboard_sub:        'Een paar snelle instellingen om te beginnen',
+    onboard_name_label: 'Jouw naam (optioneel)',
+    onboard_goal_steps: 'Dagelijks stappendoel',
+    onboard_goal_sleep: 'Slaapdoel (uren)',
+    onboard_units:      'Eenheden',
+    onboard_metric:     'Metrisch (km, kg)',
+    onboard_imperial:   'Imperiaal (mi, lb)',
+    onboard_start:      'Aan de slag',
+    onboard_skip:       'Overslaan',
+
+    sync_now:      'Nu synchroniseren',
+    sync_done:     'Demogegevens vernieuwd',
+    sync_syncing:  'Synchroniseren...',
+    sync_last:     'Laatste sync',
+    sync_never:    'Nooit',
+
+    insight_sleep_good: 'Slaapkwaliteit ziet er goed uit.',
+    insight_sleep_ok:   'Vaste slaaptijden helpen de slaapkwaliteit te verbeteren.',
+    insight_hrv:        'Dagelijkse HRV-waarden variëren. De trend van 7 dagen is betrouwbaarder.',
+    insight_hr:         'Rusthartslag kan variëren door slaap, stress en hydratatie.',
+    insight_calories:   'Calorieberekeningen van wearables zijn schattingen.',
+
+    goals_calories: 'Calorieëndoel',
   },
 
   // ─────────────────────────────────────────────────────────
@@ -586,5 +640,30 @@ export const T: Record<Lang, Record<string, string>> = {
     lang_en:    'Anglais',
     lang_nl:    'Néerlandais',
     lang_fr:    'Français',
+
+    onboard_title:      'Configurer Kinora',
+    onboard_sub:        'Quelques réglages rapides pour commencer',
+    onboard_name_label: 'Votre nom (optionnel)',
+    onboard_goal_steps: 'Objectif de pas quotidien',
+    onboard_goal_sleep: 'Objectif de sommeil (heures)',
+    onboard_units:      'Unités',
+    onboard_metric:     'Métrique (km, kg)',
+    onboard_imperial:   'Impérial (mi, lb)',
+    onboard_start:      'Commencer',
+    onboard_skip:       'Passer',
+
+    sync_now:      'Synchroniser',
+    sync_done:     'Données démo actualisées',
+    sync_syncing:  'Synchronisation...',
+    sync_last:     'Dernière sync.',
+    sync_never:    'Jamais',
+
+    insight_sleep_good: 'La qualité du sommeil semble bonne.',
+    insight_sleep_ok:   'Des horaires de sommeil réguliers améliorent généralement la qualité du sommeil.',
+    insight_hrv:        'Les valeurs VFC journalières varient. La tendance sur 7 jours est plus significative.',
+    insight_hr:         'La fréquence cardiaque au repos peut varier avec le sommeil, le stress et l\'hydratation.',
+    insight_calories:   'Les estimations de calories des wearables sont approximatives.',
+
+    goals_calories: 'Objectif de calories',
   },
 };

@@ -4,8 +4,8 @@ import { DEMO, DEFAULT_GOALS } from '@/constants/demoData';
 import { KEYS, load, save } from '@/constants/storage';
 import { useLang } from '@/context/LanguageContext';
 import { ProgressBar } from '@/components/ProgressBar';
-import { C } from '@/constants/colors';
 import { Button } from '@/components/Button';
+import { C } from '@/constants/colors';
 
 function GoalInput({ label, value, onChangeText, unit }: {
   label: string; value: string; onChangeText: (v: string) => void; unit: string;
@@ -29,11 +29,21 @@ function GoalInput({ label, value, onChangeText, unit }: {
 
 export default function GoalsScreen() {
   const { t } = useLang();
-  const [goals, setGoals] = useState({ steps: String(DEFAULT_GOALS.steps), sleepHours: String(DEFAULT_GOALS.sleepHours), activeMinutes: String(DEFAULT_GOALS.activeMinutes) });
+  const [goals, setGoals] = useState({
+    steps:         String(DEFAULT_GOALS.steps),
+    sleepHours:    String(DEFAULT_GOALS.sleepHours),
+    activeMinutes: String(DEFAULT_GOALS.activeMinutes),
+    calories:      String(DEFAULT_GOALS.calories),
+  });
 
   useEffect(() => {
     load(KEYS.GOALS, DEFAULT_GOALS).then(g => {
-      setGoals({ steps: String(g.steps), sleepHours: String(g.sleepHours), activeMinutes: String(g.activeMinutes) });
+      setGoals({
+        steps:         String(g.steps),
+        sleepHours:    String(g.sleepHours),
+        activeMinutes: String(g.activeMinutes),
+        calories:      String(g.calories ?? DEFAULT_GOALS.calories),
+      });
     });
   }, []);
 
@@ -42,32 +52,34 @@ export default function GoalsScreen() {
       steps:         parseInt(goals.steps)         || DEFAULT_GOALS.steps,
       sleepHours:    parseFloat(goals.sleepHours)   || DEFAULT_GOALS.sleepHours,
       activeMinutes: parseInt(goals.activeMinutes)  || DEFAULT_GOALS.activeMinutes,
+      calories:      parseInt(goals.calories)       || DEFAULT_GOALS.calories,
     };
     await save(KEYS.GOALS, parsed);
     Alert.alert('', t('goals_saved'));
   }
 
-  const stepsParsed = parseInt(goals.steps) || DEFAULT_GOALS.steps;
-  const activeParsed = parseInt(goals.activeMinutes) || DEFAULT_GOALS.activeMinutes;
-  const sleepParsed = parseFloat(goals.sleepHours) || DEFAULT_GOALS.sleepHours;
+  const stepsParsed    = parseInt(goals.steps)         || DEFAULT_GOALS.steps;
+  const activeParsed   = parseInt(goals.activeMinutes) || DEFAULT_GOALS.activeMinutes;
+  const sleepParsed    = parseFloat(goals.sleepHours)  || DEFAULT_GOALS.sleepHours;
+  const caloriesParsed = parseInt(goals.calories)      || DEFAULT_GOALS.calories;
 
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <Text style={s.title}>{t('goals_title')}</Text>
 
-      {/* Today vs goal */}
       <Text style={s.sectionLabel}>{t('goals_today')}</Text>
       <View style={s.card}>
-        <GoalProgress label={t('goals_steps')}  current={DEMO.steps}         goal={stepsParsed}  color={C.pri}    unit="steps" />
-        <GoalProgress label={t('goals_sleep')}  current={DEMO.sleepHours}    goal={sleepParsed}  color="#818CF8"  unit="h" />
-        <GoalProgress label={t('goals_active')} current={DEMO.activeMinutes} goal={activeParsed} color="#34D399"  unit="min" last />
+        <GoalProgress label={t('goals_steps')}    current={DEMO.steps}         goal={stepsParsed}    color={C.pri}    unit="steps" />
+        <GoalProgress label={t('goals_sleep')}    current={DEMO.sleepHours}    goal={sleepParsed}    color="#818CF8"  unit="h" />
+        <GoalProgress label={t('goals_active')}   current={DEMO.activeMinutes} goal={activeParsed}   color="#34D399"  unit="min" />
+        <GoalProgress label={t('goals_calories')} current={DEMO.calories}      goal={caloriesParsed} color="#FB923C"  unit="kcal" last />
       </View>
 
-      {/* Edit goals */}
       <View style={[s.card, s.formCard]}>
-        <GoalInput label={t('goals_steps')}  value={goals.steps}         onChangeText={v => setGoals(g => ({ ...g, steps: v }))}         unit="steps" />
-        <GoalInput label={t('goals_sleep')}  value={goals.sleepHours}    onChangeText={v => setGoals(g => ({ ...g, sleepHours: v }))}     unit="h" />
-        <GoalInput label={t('goals_active')} value={goals.activeMinutes} onChangeText={v => setGoals(g => ({ ...g, activeMinutes: v }))} unit="min" />
+        <GoalInput label={t('goals_steps')}    value={goals.steps}         onChangeText={v => setGoals(g => ({ ...g, steps: v }))}         unit="steps" />
+        <GoalInput label={t('goals_sleep')}    value={goals.sleepHours}    onChangeText={v => setGoals(g => ({ ...g, sleepHours: v }))}     unit="h" />
+        <GoalInput label={t('goals_active')}   value={goals.activeMinutes} onChangeText={v => setGoals(g => ({ ...g, activeMinutes: v }))} unit="min" />
+        <GoalInput label={t('goals_calories')} value={goals.calories}      onChangeText={v => setGoals(g => ({ ...g, calories: v }))}       unit="kcal" />
       </View>
 
       <Button label={t('goals_save')} onPress={handleSave} />

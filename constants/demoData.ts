@@ -39,6 +39,7 @@ export const DEFAULT_GOALS = {
   steps:         10000,
   sleepHours:    8,
   activeMinutes: 30,
+  calories:      500,
 };
 
 // Default profile

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
-import { DEMO } from '@/constants/demoData';
+import { DEMO, DEFAULT_GOALS } from '@/constants/demoData';
+import { KEYS, load } from '@/constants/storage';
 import { useLang } from '@/context/LanguageContext';
 import { ProgressBar } from '@/components/ProgressBar';
 import { WeekBarChart } from '@/components/WeekBarChart';
@@ -21,8 +22,14 @@ function Stat({ label, value, unit, color = C.pri }: { label: string; value: str
 
 export default function ActivityScreen() {
   const { t } = useLang();
-  const stepsPct = DEMO.steps / DEMO.stepsGoal;
-  const activePct = DEMO.activeMinutes / DEMO.activeGoal;
+  const [goals, setGoals] = useState(DEFAULT_GOALS);
+
+  useEffect(() => {
+    load(KEYS.GOALS, DEFAULT_GOALS).then(setGoals);
+  }, []);
+
+  const stepsPct  = Math.min(1, DEMO.steps / goals.steps);
+  const activePct = Math.min(1, DEMO.activeMinutes / goals.activeMinutes);
 
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -32,7 +39,7 @@ export default function ActivityScreen() {
         <Text style={s.sectionLabel}>{t('act_progress')}</Text>
         <View style={s.stepsRow}>
           <Text style={s.stepsValue}>{DEMO.steps.toLocaleString('en')}</Text>
-          <Text style={s.stepsGoal}>/ {DEMO.stepsGoal.toLocaleString('en')} {t('act_goal').toLowerCase()}</Text>
+          <Text style={s.stepsGoal}>/ {goals.steps.toLocaleString('en')} {t('act_goal').toLowerCase()}</Text>
         </View>
         <ProgressBar progress={stepsPct} color={C.pri} height={8} />
         <Text style={s.stepsCaption}>{Math.round(stepsPct * 100)}% {t('act_goal').toLowerCase()}</Text>
@@ -42,7 +49,7 @@ export default function ActivityScreen() {
         <Stat label={t('act_distance')} value={DEMO.distance} unit={t('act_km')} color={C.pri} />
         <Stat label={t('act_calories')} value={DEMO.calories} unit={t('act_kcal')} color="#FB923C" />
         <Stat
-          label={`${t('act_active')} (${t('act_goal_active')} ${DEMO.activeGoal}${t('act_min')})`}
+          label={`${t('act_active')} (${t('act_goal_active')} ${goals.activeMinutes}${t('act_min')})`}
           value={DEMO.activeMinutes}
           unit={t('act_min')}
           color="#34D399"
@@ -82,38 +89,12 @@ const s = StyleSheet.create({
     letterSpacing: 0.8,
     marginBottom: 4,
   },
-  stepsRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 8,
-  },
-  stepsValue: {
-    fontSize: 40,
-    fontWeight: '800',
-    color: C.pri,
-    lineHeight: 44,
-  },
-  stepsGoal: {
-    fontSize: 14,
-    color: C.muted,
-    marginBottom: 6,
-  },
-  stepsCaption: {
-    fontSize: 12,
-    color: C.muted,
-    marginTop: 2,
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-  chartCaption: {
-    fontSize: 11,
-    color: C.muted,
-    textAlign: 'center',
-    marginTop: 4,
-  },
+  stepsRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 8 },
+  stepsValue: { fontSize: 40, fontWeight: '800', color: C.pri, lineHeight: 44 },
+  stepsGoal: { fontSize: 14, color: C.muted, marginBottom: 6 },
+  stepsCaption: { fontSize: 12, color: C.muted, marginTop: 2 },
+  statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  chartCaption: { fontSize: 11, color: C.muted, textAlign: 'center', marginTop: 4 },
 });
 
 const st = StyleSheet.create({
@@ -134,19 +115,7 @@ const st = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-  statValueRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 3,
-  },
-  statValue: {
-    fontSize: 28,
-    fontWeight: '800',
-    lineHeight: 32,
-  },
-  statUnit: {
-    fontSize: 12,
-    color: C.muted2,
-    marginBottom: 3,
-  },
+  statValueRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 3 },
+  statValue: { fontSize: 28, fontWeight: '800', lineHeight: 32 },
+  statUnit: { fontSize: 12, color: C.muted2, marginBottom: 3 },
 });

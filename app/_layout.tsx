@@ -29,6 +29,7 @@ function AppStack() {
       <Stack.Screen name="faq"        options={{ title: t('faq_title') }} />
       <Stack.Screen name="legal"      options={{ title: t('legal_title') }} />
       <Stack.Screen name="settings"   options={{ title: t('lang_title') }} />
+      <Stack.Screen name="japanese"   options={{ headerShown: false }} />
     </Stack>
   );
 }

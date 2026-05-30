@@ -37,6 +37,17 @@ export default function MoreScreen() {
   return (
     <ScrollView style={s.scroll} contentContainerStyle={s.content}>
       <View style={s.section}>
+        <Row
+          icon="language-outline"
+          iconColor="#F59E0B"
+          label="日本語 · Aprende japonés"
+          sub="Hiragana, vocabulario y quiz"
+          onPress={() => router.push('/japanese')}
+          last
+        />
+      </View>
+
+      <View style={s.section}>
         <Row icon="cart-outline"     iconColor={C.pri}      label={t('more_shop')}    onPress={() => router.push('/shop')} />
         <Row icon="person-outline"   iconColor="#818CF8"    label={t('more_profile')} onPress={() => router.push('/profile')} />
         <Row icon="flag-outline"     iconColor="#34D399"    label={t('more_goals')}   onPress={() => router.push('/goals')} last />

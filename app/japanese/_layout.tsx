@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { C } from '@/constants/colors';
+import { JapaneseProvider } from '@/context/JapaneseContext';
 
 const OPT = {
   headerStyle:      { backgroundColor: C.bg2 },
@@ -11,13 +12,16 @@ const OPT = {
 
 export default function JapaneseLayout() {
   return (
-    <Stack screenOptions={OPT}>
-      <Stack.Screen name="index"      options={{ title: '日本語 · Japonés' }} />
-      <Stack.Screen name="hiragana"   options={{ title: 'Hiragana · ひらがな' }} />
-      <Stack.Screen name="katakana"   options={{ title: 'Katakana · カタカナ' }} />
-      <Stack.Screen name="vocabulary" options={{ title: 'Vocabulario · 語彙' }} />
-      <Stack.Screen name="phrases"    options={{ title: 'Frases · フレーズ' }} />
-      <Stack.Screen name="quiz"       options={{ title: 'Quiz · クイズ' }} />
-    </Stack>
+    <JapaneseProvider>
+      <Stack screenOptions={OPT}>
+        <Stack.Screen name="index"       options={{ title: '日本語 · Japonés' }} />
+        <Stack.Screen name="hiragana"    options={{ title: 'Hiragana · ひらがな' }} />
+        <Stack.Screen name="katakana"    options={{ title: 'Katakana · カタカナ' }} />
+        <Stack.Screen name="vocabulary"  options={{ title: 'Vocabulario · 語彙' }} />
+        <Stack.Screen name="flashcards"  options={{ title: 'Fichas · フラッシュカード' }} />
+        <Stack.Screen name="phrases"     options={{ title: 'Frases · フレーズ' }} />
+        <Stack.Screen name="quiz"        options={{ title: 'Quiz · クイズ' }} />
+      </Stack>
+    </JapaneseProvider>
   );
 }
